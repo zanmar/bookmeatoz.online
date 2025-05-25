@@ -1,0 +1,122 @@
+/* /var/www/bookmeatoz.online_ts/frontend/src/index.css */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+/* Consider the import order for mobile-fixes.css.
+  If it contains utility-like overrides or new components, it might be better after @tailwind components.
+  If it contains very specific, final overrides, after @tailwind utilities might be okay, or even at the end.
+  For now, leaving it here, but be mindful of potential Preflight overrides.
+*/
+@import './styles/mobile-fixes.css';
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    @apply scroll-smooth;
+    /* Prevent zoom on iOS when input fields are focused */
+    -webkit-text-size-adjust: 100%;
+    -ms-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+    /* Consider if position: relative is truly needed here */
+    /* position: relative; */ 
+    overflow-x: hidden; /* Be cautious, this can hide actual layout overflow issues */
+  }
+  
+  body {
+    @apply font-sans antialiased text-neutral-dark bg-neutral-lightest;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    -webkit-tap-highlight-color: transparent;
+    overscroll-behavior: none; /* Prevent rubber band scrolling on iOS */
+    font-size: 16px; /* Ensure proper font size on mobile, helps prevent zoom */
+    
+    /* overflow-x: hidden; is on html, usually sufficient.
+       If body also needs it, ensure it's intentional.
+       max-width: 100vw; can sometimes cause issues with scrollbars. 
+       Using max-width: 100%; on a main wrapper div inside body is often safer.
+       Consider if position: relative is truly needed here. */
+    /* position: relative; */
+    /* max-width: 100vw; */ /* Potentially problematic, html's overflow-x:hidden should handle it */
+  }
+
+  /* Fix viewport units on mobile devices - this is good */
+  .min-h-screen {
+    min-height: 100vh; /* Fallback */
+    min-height: 100dvh; /* Preferred for mobile if supported */
+  }
+
+  /* Ensure all elements respect container boundaries - this is good */
+  * {
+    box-sizing: border-box;
+  }
+
+  /* Touch targets - this is good */
+  button, a, input, textarea, select {
+    @apply min-h-[44px]; /* Or slightly more like min-h-11 or min-h-12 for Tailwind scale */
+    touch-action: manipulation; /* Improve touch responsiveness */
+  }
+
+  /* Prevent text from being too small on mobile and prevent zoom on focus for iOS - this is good */
+  input, textarea, select {
+    font-size: 16px; /* Minimum 16px on iOS to prevent auto-zoom on focus */
+  }
+
+  /* Base heading styles - this is good */
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-semibold text-neutral-darkest;
+  }
+
+  /* Ensure images are responsive by default - this is good */
+  img, video { /* Added video for responsiveness too */
+    max-width: 100%;
+    height: auto;
+    display: block; /* Often useful for images to remove bottom space */
+  }
+
+  /* Container utilities:
+    Tailwind's `.container` class already provides centering and optional max-width.
+    Applying `max-width: 100%` to specific max-width utilities like `.max-w-7xl`
+    will override their intended behavior. 
+    If you want to apply default padding to these, that's fine, but remove the max-width override.
+  */
+  .container, 
+  .max-w-7xl, .max-w-6xl, .max-w-5xl, .max-w-4xl, 
+  .max-w-3xl, .max-w-2xl, .max-w-xl, .max-w-lg, 
+  .max-w-md, .max-w-sm, .max-w-xs { /* Added more max-width utilities for completeness if you intend to style them all */
+    @apply px-4 sm:px-6 lg:px-8;
+    /* REMOVED: max-width: 100%; */
+    /* These classes already define their own max-width. Adding max-width: 100% here is incorrect. */
+    /* The .container class from Tailwind will center itself and can have padding applied. */
+    /* If you are using Tailwind's .container, you can style it like: */
+    /* .container {
+        @apply px-4 sm:px-6 lg:px-8; // Your desired padding
+    }
+    */
+  }
+  /* If you want a generic container that is always 100% width with padding, define a new class: */
+  /*
+  .content-wrapper {
+    @apply w-full px-4 sm:px-6 lg:px-8;
+  }
+  */
+}
+
+@layer components {
+  /* Example of a custom component class - this is good */
+  .btn {
+    @apply px-4 py-2 rounded-md font-medium focus:outline-none focus:ring-2 focus:ring-offset-2 transition-colors duration-150 ease-in-out;
+    /* Added transition for smoother hover */
+  }
+  .btn-primary {
+    @apply bg-primary text-white hover:bg-primary-dark focus:ring-primary;
+  }
+  .btn-secondary {
+    @apply bg-secondary text-white hover:bg-secondary-dark focus:ring-secondary;
+  }
+  .btn-outline {
+    @apply bg-transparent border border-primary text-primary hover:bg-primary-light hover:text-primary-dark focus:ring-primary;
+  }
+  /* Add more custom component styles */
+}

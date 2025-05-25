@@ -1,0 +1,183 @@
+/* Mobile Device Specific Fixes */
+
+/* Fix for iOS Safari viewport units */
+@supports (height: 100dvh) {
+  .min-h-screen {
+    min-height: 100dvh;
+  }
+}
+
+@supports (height: 100svh) {
+  .min-h-screen {
+    min-height: 100svh;
+  }
+}
+
+/* Prevent zoom on form inputs in iOS Safari */
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="number"],
+input[type="tel"],
+input[type="url"],
+input[type="search"],
+textarea,
+select {
+  font-size: 16px !important;
+  transform: scale(1);
+}
+
+/* Improve touch targets for mobile */
+.mobile-touch-target {
+  min-height: 44px;
+  min-width: 44px;
+  touch-action: manipulation;
+}
+
+/* Prevent horizontal scrolling on mobile */
+body {
+  overflow-x: hidden;
+  overscroll-behavior-x: none;
+}
+
+/* Better mobile container handling */
+.mobile-container {
+  padding-left: max(16px, env(safe-area-inset-left));
+  padding-right: max(16px, env(safe-area-inset-right));
+}
+
+/* Fix for sticky elements on mobile */
+.mobile-sticky {
+  position: -webkit-sticky;
+  position: sticky;
+  z-index: 40;
+}
+
+/* Prevent text selection issues on mobile */
+.mobile-no-select {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+/* Better mobile button styling */
+.mobile-button {
+  touch-action: manipulation;
+  -webkit-appearance: none;
+  appearance: none;
+  outline: none;
+  border: none;
+  background: none;
+  cursor: pointer;
+}
+
+/* Fix for mobile Safari address bar */
+.mobile-full-height {
+  height: 100vh;
+  height: 100dvh;
+}
+
+/* Smooth scrolling for mobile */
+.mobile-smooth-scroll {
+  -webkit-overflow-scrolling: touch;
+  scroll-behavior: smooth;
+}
+
+/* Better mobile grid handling */
+.mobile-grid-fix {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1rem;
+}
+
+@media (max-width: 475px) {
+  .mobile-grid-fix {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Fix for mobile landscape mode */
+@media (orientation: landscape) and (max-height: 500px) {
+  .mobile-landscape-adjust {
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+  }
+}
+
+/* Better mobile card layouts */
+.mobile-card {
+  margin: 0.5rem;
+  border-radius: 0.5rem;
+  overflow: hidden;
+}
+
+/* Mobile-friendly table alternatives */
+.mobile-table-stack {
+  display: block;
+}
+
+.mobile-table-stack thead {
+  display: none;
+}
+
+.mobile-table-stack tbody,
+.mobile-table-stack tr,
+.mobile-table-stack td {
+  display: block;
+  width: 100%;
+}
+
+.mobile-table-stack tr {
+  margin-bottom: 1rem;
+  border: 1px solid #e5e7eb;
+  border-radius: 0.5rem;
+  padding: 1rem;
+}
+
+.mobile-table-stack td {
+  text-align: left;
+  padding: 0.25rem 0;
+  border: none;
+}
+
+/* Safe area support for devices with notches */
+.mobile-safe-area {
+  padding-top: env(safe-area-inset-top);
+  padding-bottom: env(safe-area-inset-bottom);
+  padding-left: env(safe-area-inset-left);
+  padding-right: env(safe-area-inset-right);
+}
+
+/* Fix for mobile modal/overlay issues */
+.mobile-modal-fix {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 9999;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Better mobile form styling */
+.mobile-form input,
+.mobile-form textarea,
+.mobile-form select {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid #d1d5db;
+  border-radius: 0.375rem;
+  font-size: 16px;
+  line-height: 1.5;
+  background-color: white;
+}
+
+.mobile-form input:focus,
+.mobile-form textarea:focus,
+.mobile-form select:focus {
+  outline: 2px solid #3b82f6;
+  outline-offset: 2px;
+  border-color: #3b82f6;
+}

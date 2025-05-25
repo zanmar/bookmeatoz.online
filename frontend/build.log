@@ -1,0 +1,39 @@
+
+> bookmeatoz-frontend@1.0.0 build
+> vite build
+
+vite v6.3.5 building for production...
+transforming...
+✓ 1035 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/index.html                                     0.17 kB │ gzip:  0.15 kB
+dist/assets/TenantPublicBookingPage-DdjxYr1F.css   21.66 kB │ gzip:  3.04 kB
+dist/assets/index-CsLF6UNm.css                     44.84 kB │ gzip:  7.85 kB
+dist/assets/index-C43xNRL3.js                       0.31 kB │ gzip:  0.22 kB │ map:    12.05 kB
+dist/assets/TenantHomePage-z3dXenAD.js              0.43 kB │ gzip:  0.32 kB │ map:     0.77 kB
+dist/assets/NotFoundPage-BiMPJIj7.js                0.60 kB │ gzip:  0.40 kB │ map:     1.18 kB
+dist/assets/ManageEmployeesPage-BBENJ5TP.js         0.66 kB │ gzip:  0.39 kB │ map:     1.43 kB
+dist/assets/AuthLayout-FxuZs3wg.js                  1.04 kB │ gzip:  0.59 kB │ map:     2.14 kB
+dist/assets/VerifyEmailPage-BMVhy90b.js             2.73 kB │ gzip:  1.09 kB │ map:     6.40 kB
+dist/assets/AboutPage-B2PysWM-.js                   3.52 kB │ gzip:  1.35 kB │ map:     5.99 kB
+dist/assets/ForgotPasswordPage-sB-BTmfG.js          3.53 kB │ gzip:  1.49 kB │ map:     8.02 kB
+dist/assets/LoginPage-aoZYIulR.js                   3.53 kB │ gzip:  1.34 kB │ map:     8.21 kB
+dist/assets/ResetPasswordPage-DPGpFk9c.js           4.64 kB │ gzip:  1.68 kB │ map:    11.22 kB
+dist/assets/ServicesPage-BSBkbjRV.js                5.33 kB │ gzip:  1.85 kB │ map:     8.83 kB
+dist/assets/RegisterPage-D0x8xqrC.js                5.42 kB │ gzip:  1.67 kB │ map:    11.68 kB
+dist/assets/ContactPage-eACV2vkv.js                 5.53 kB │ gzip:  1.93 kB │ map:    12.36 kB
+dist/assets/UserDashboardPage-DTfv0pOP.js           6.02 kB │ gzip:  2.22 kB │ map:    13.63 kB
+dist/assets/ManageBookingsPage-DJNf9_EI.js          6.66 kB │ gzip:  2.35 kB │ map:    16.78 kB
+dist/assets/HomePage-DPE3EA3E.js                    6.75 kB │ gzip:  2.04 kB │ map:    10.71 kB
+dist/assets/DashboardLayout-BvI0-7pk.js             7.33 kB │ gzip:  2.43 kB │ map:    16.04 kB
+dist/assets/ManageCustomersPage-DG70mMrp.js         8.36 kB │ gzip:  2.78 kB │ map:    22.19 kB
+dist/assets/ManageServicesPage-BN2RO7_m.js          9.05 kB │ gzip:  2.81 kB │ map:    23.37 kB
+dist/assets/queryKeys-BAYodHRl.js                  11.79 kB │ gzip:  4.00 kB │ map:    48.61 kB
+dist/assets/BusinessSettingsPage-WLTruIN3.js       12.32 kB │ gzip:  4.06 kB │ map:    35.77 kB
+dist/assets/MainLayout-Byp3PifZ.js                 21.13 kB │ gzip:  7.43 kB │ map:    54.50 kB
+dist/assets/TimeDisplay-frLcPT8J.js                32.12 kB │ gzip:  9.55 kB │ map:   218.52 kB
+dist/assets/types-BW2QBdJZ.js                      78.34 kB │ gzip: 21.46 kB │ map:   378.57 kB
+dist/assets/TenantPublicBookingPage-CQ289n7M.js   187.50 kB │ gzip: 48.66 kB │ map: 1,385.46 kB
+dist/assets/index-BH67rc4s.js                     242.41 kB │ gzip: 80.29 kB │ map: 1,027.47 kB
+✓ built in 4.47s

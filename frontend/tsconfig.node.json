@@ -1,0 +1,13 @@
+// This file is typically used by Vite for its internal build processes and type checking Node.js-specific code like vite.config.ts.
+{
+  "compilerOptions": {
+    "composite": true,
+    "skipLibCheck": true,
+    "module": "ESNext",
+    "moduleResolution": "bundler", // or "node"
+    "allowSyntheticDefaultImports": true,
+    "strict": true, // Ensure strict checking for config files too
+    "types": ["node"] // Specify Node types for files processed with this config
+  },
+  "include": ["vite.config.ts"]
+}
