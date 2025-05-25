@@ -1,7 +1,8 @@
 import React from 'react';
 import { TimeSlot } from '@/types';
 import Spinner from '@/components/common/Spinner';
-import { useTimezone } from '@/hooks/useTimezone'; // Import useTimezone
+import { useTimezone } from '@/hooks/useTimezone';
+// import { formatInTimeZone } from 'date-fns-tz'; // Not needed if useTimezone exposes it
 
 interface TimeSlotPickerProps {
   slots: TimeSlot[];
@@ -14,45 +15,64 @@ interface TimeSlotPickerProps {
   // However, for clarity, parent can pass it or this component can use the hook.
 }
 
-const TimeSlotPicker: React.FC<TimeSlotPickerProps> = ({ 
-  slots, 
-  onSelectSlot, 
-  isLoadingSlots, 
-  selectedSlotStartTime, 
+const TimeSlotPicker: React.FC<TimeSlotPickerProps> = ({
+  slots,
+  onSelectSlot,
+  isLoadingSlots,
+  selectedSlotStartTime,
   disabled,
 }) => {
-  const { formatInUserLocalTime, businessTimezone, userLocalTimezone } = useTimezone();
+  const { businessTimezone, formatInBusinessTimezone } = useTimezone(); // Using formatInBusinessTimezone from hook
 
-  if (disabled) return null;
-  if (isLoadingSlots) { /* ... spinner ... */ }
-  if (slots.length === 0) { /* ... no slots message ... */ }
+  if (disabled) {
+    return (
+        <div className="mb-6">
+          <p className="block text-sm font-medium text-gray-400 mb-3">4. Pick an Available Time</p>
+          <div className="text-center text-gray-500 p-4 border border-dashed rounded-lg">
+            Please select a date first.
+          </div>
+        </div>
+    );
+  }
+
+  if (isLoadingSlots) {
+    return (
+      <div className="mb-6">
+        <p className="block text-sm font-medium text-gray-700 mb-3">4. Pick an Available Time</p>
+        <div className="flex justify-center items-center p-4 border border-dashed rounded-lg">
+          <Spinner size="md" /> 
+          <span className="ml-2 text-gray-500">Finding available slots...</span>
+        </div>
+      </div>
+    );
+  }
+  
+  if (slots.length === 0) {
+    return (
+      <div className="mb-6">
+        <p className="block text-sm font-medium text-gray-700 mb-3">4. Pick an Available Time</p>
+        <div className="text-center text-gray-500 p-4 border border-dashed rounded-lg">
+          No time slots available for the selected date or criteria. Please try another date.
+        </div>
+      </div>
+    );
+  }
 
   const formatTimeForDisplay = (utcIsoString: string) => {
-    // Display in user's local time by default, but clearly indicate if it's business time.
-    // The `useTimezone` hook provides `businessTimezone`.
-    // For booking slots, it's often best to show them in the business's local time
-    // to avoid confusion if the user is in a different timezone.
-    // Or, show in user's local time and also indicate business time.
-    
-    // Option 1: Show in user's local time (current behavior)
-    // return new Date(utcIsoString).toLocaleTimeString([], { hour: 'numeric', minute: '2-digit', hour12: true });
-
-    // Option 2: Show in business's local time using the hook
-    const formatted = formatInUserLocalTime(utcIsoString, 'p'); // 'p' is short time like 1:00 PM
-    // const businessTimeFormatted = businessTimezone ? formatInBusinessTimezone(utcIsoString, 'p') : null;
-    // if (businessTimeFormatted && businessTimeFormatted !== formatted) {
-    //   return `${formatted} (Your time) / ${businessTimeFormatted} (Business time)`;
-    // }
-    return formatted || "Invalid Time";
+    if (!businessTimezone) {
+      // Fallback if businessTimezone is somehow not available, though useTimezone should provide it
+      return new Date(utcIsoString).toLocaleTimeString([], { hour: 'numeric', minute: '2-digit', hour12: true });
+    }
+    // Use formatInBusinessTimezone from the hook
+    return formatInBusinessTimezone(utcIsoString, 'p') || "Invalid Time"; // 'p' is for h:mm a
   };
 
 
   return (
     <div className="mb-6">
       <p className="block text-sm font-medium text-gray-700 mb-3">
-        4. Pick an Available Time <span className="text-xs text-gray-500">(shown in your local timezone: {userLocalTimezone.replace('_', ' ')})</span>
+        4. Pick an Available Time <span className="text-xs text-gray-500">(shown in business timezone: {businessTimezone ? businessTimezone.replace('_', ' ') : 'Loading...'})</span>
       </p>
-      {/* Or: <p>Times shown in business timezone: {businessTimezone?.replace('_', ' ')}</p> */}
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
         {slots.map(slot => (
           <button

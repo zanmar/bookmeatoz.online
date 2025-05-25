@@ -1,5 +1,3 @@
-
-
 // Query keys should be structured to allow for easy invalidation and selection.
 // Generally: [entityName, type (list/detail), params/id]
 
@@ -44,6 +42,7 @@ export const queryKeys = {
   },
 
   // Employees (employeeId here is employees.id)
+  // This structure is compatible with the new hooks
   employees: {
     all: (businessId?: string | null) => [...queryKeys.businesses.detail(businessId || 'current'), 'employees'] as const,
     lists: (businessId?: string | null) => [...queryKeys.employees.all(businessId), 'list'] as const,
@@ -84,11 +83,33 @@ export const queryKeys = {
     details: (businessId?: string | null) => [...queryKeys.bookings.all(businessId), 'detail'] as const,
     detail: (businessId: string | null | undefined, bookingId: string) => 
         [...queryKeys.bookings.details(businessId), bookingId] as const,
-    availability: (businessId: string, query: AvailabilityQuery) => 
-        [...queryKeys.bookings.all(businessId), 'availability', query] as const,
+    // Removed old availability key:
+    // availability: (businessId: string, query: AvailabilityQuery) => 
+    //     [...queryKeys.bookings.all(businessId), 'availability', query] as const,
     slotCheck: (businessId: string, params: {service_id: string, start_time: string, employee_id?: string}) =>
         [...queryKeys.bookings.all(businessId), 'slotCheck', params] as const,
   },
   
+  // Availability (New section for fetching time slots)
+  availability: {
+    all: () => [...queryKeys.all, 'availability'] as const,
+    slots: (
+      businessId?: string | null,
+      serviceId?: string,
+      date?: string,
+      employeeId?: string | null,
+      timezone?: string
+    ) =>
+      [
+        ...queryKeys.availability.all(),
+        'slots',
+        businessId || 'current', // Use 'current' as a placeholder if businessId is null/undefined
+        serviceId,
+        date,
+        employeeId || 'any', // Use 'any' as a placeholder if employeeId is null/undefined
+        timezone,
+      ] as const,
+  },
+
   // Add other entities like user profiles, subscriptions etc.
 };

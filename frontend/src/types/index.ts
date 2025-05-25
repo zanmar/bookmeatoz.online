@@ -1,3 +1,9 @@
+// Add these exports first
+export * from './service.types';
+export * from './employee.types';
+export * from './availability.types';
+export * from './booking.types';
+
 // --- Common & API Response Types ---
 export interface ApiErrorResponse {
   success: false;
@@ -32,7 +38,7 @@ export interface PaginatedResponse<T> {
 
 
 // --- User & Auth Types ---
-export interface UserProfile {
+export interface UserProfile { // Existing UserProfile is more detailed, keeping it.
   name?: string;
   firstName?: string;
   lastName?: string;
@@ -40,7 +46,15 @@ export interface UserProfile {
   phone?: string;
 }
 
-export type UserRole = 
+// New User interface as requested by subtask
+export interface User {
+  id: string;
+  email: string;
+  profile?: UserProfile;
+  // other user fields...
+}
+
+export type UserRole =  // Existing UserRole is more comprehensive, keeping it.
   | 'system_admin' 
   | 'tenant_admin' 
   | 'business_owner' 
@@ -51,27 +65,34 @@ export type UserRole =
 // This should mirror the PERMISSIONS object from the backend (types/user.types.ts)
 // For simplicity, string is used here, but a const object imported or duplicated is better.
 export type Permission = string; 
-export const PERMISSIONS = { // Ensure this matches backend
-  MANAGE_TENANTS: 'manage_tenants',
-  VIEW_ALL_DATA: 'view_all_data',
-  MANAGE_TENANT_BUSINESSES: 'manage_tenant_businesses',
-  MANAGE_TENANT_USERS: 'manage_tenant_users',
-  VIEW_TENANT_REPORTS: 'view_tenant_reports',
-  MANAGE_TENANT_SUBSCRIPTIONS: 'manage_tenant_subscriptions',
-  MANAGE_BUSINESS_SETTINGS: 'manage_business_settings',
-  MANAGE_SERVICES: 'manage_services',
-  MANAGE_EMPLOYEES: 'manage_employees',
-  MANAGE_SCHEDULES: 'manage_schedules',
-  MANAGE_BOOKINGS: 'manage_bookings',
-  VIEW_BUSINESS_REPORTS: 'view_business_reports',
-  MANAGE_CUSTOMERS: 'manage_customers',
-  MANAGE_BUSINESS_BILLING: 'manage_business_billing',
-  VIEW_OWN_SCHEDULE: 'view_own_schedule',
-  MANAGE_OWN_BOOKINGS: 'manage_own_bookings',
-  VIEW_ASSIGNED_BOOKINGS: 'view_assigned_bookings',
-  CREATE_BOOKINGS: 'create_bookings',
-  VIEW_OWN_BOOKINGS: 'view_own_bookings',
-  MANAGE_OWN_PROFILE: 'manage_own_profile',
+// Updated PERMISSIONS based on subtask and existing values.
+// Kept as a const object for consistency with existing codebase.
+export const PERMISSIONS = { 
+  MANAGE_TENANTS: 'manage_tenants', // Existing & New
+  VIEW_ALL_DATA: 'view_all_data', // Existing
+  MANAGE_TENANT_BUSINESSES: 'manage_tenant_businesses', // Existing
+  MANAGE_TENANT_USERS: 'manage_tenant_users', // Existing & New
+  VIEW_TENANT_REPORTS: 'view_tenant_reports', // Existing
+  MANAGE_TENANT_SUBSCRIPTIONS: 'manage_tenant_subscriptions', // Existing
+  MANAGE_BUSINESS_SETTINGS: 'manage_business_settings', // Existing & New
+  MANAGE_SERVICES: 'manage_services', // Existing & New
+  VIEW_SERVICES : 'view:services', // New
+  MANAGE_EMPLOYEES: 'manage_employees', // Existing & New
+  VIEW_EMPLOYEES : 'view:employees', // New
+  MANAGE_SCHEDULES: 'manage_schedules', // Existing & New
+  VIEW_SCHEDULES : 'view:schedules', // New
+  MANAGE_BOOKINGS: 'manage_bookings', // Existing (covers MANAGE_ALL_BOOKINGS from subtask)
+  MANAGE_ALL_BOOKINGS : 'manage:all_bookings', // New (explicitly adding as per subtask, can be alias or distinct)
+  CREATE_BOOKINGS: 'create_bookings', // Existing (covers CREATE_BOOKING from subtask)
+  CREATE_BOOKING : 'create:booking', // New (explicitly adding as per subtask)
+  VIEW_OWN_BOOKINGS: 'view_own_bookings', // Existing & New
+  VIEW_BUSINESS_REPORTS: 'view_business_reports', // Existing
+  MANAGE_CUSTOMERS: 'manage_customers', // Existing & New
+  MANAGE_BUSINESS_BILLING: 'manage_business_billing', // Existing
+  VIEW_OWN_SCHEDULE: 'view_own_schedule', // Existing
+  MANAGE_OWN_BOOKINGS: 'manage_own_bookings', // Existing
+  VIEW_ASSIGNED_BOOKINGS: 'view_assigned_bookings', // Existing
+  MANAGE_OWN_PROFILE: 'manage_own_profile', // Existing
 } as const;
 
 
@@ -96,7 +117,7 @@ export interface LoginResponseData { // Data within the successful login respons
 
 
 // --- Tenant & Business Types ---
-export interface TenantInfo { // For TenantContext, often a lean version
+export interface TenantInfo { // Existing TenantInfo is more detailed, keeping it.
   id: string;
   name: string;
   subdomain: string;
@@ -104,7 +125,7 @@ export interface TenantInfo { // For TenantContext, often a lean version
   // other relevant public/contextual info
 }
 
-export interface BusinessInfo { // For TenantContext, often a lean version
+export interface BusinessInfo { // Existing BusinessInfo is more detailed, keeping it.
   id: string;
   tenant_id: string;
   name: string;
@@ -158,30 +179,8 @@ export interface BusinessProfile extends BusinessInfo { // Extends lean Business
     settings: BusinessSettings; 
 }
 
-
 // --- Service Types ---
-export interface Service {
-  id: string;
-  business_id: string;
-  name: string;
-  description?: string | null;
-  duration: number; // in minutes
-  price: number;
-  currency: string;
-  status: 'active' | 'inactive' | 'archived';
-  category_id?: string | null;
-  is_private?: boolean;
-  buffer_before_minutes?: number;
-  buffer_after_minutes?: number;
-  settings?: Record<string, any>; // For other service-specific options
-  created_at: string; // ISO Date string
-  updated_at: string; // ISO Date string
-}
-export interface CreateServiceDto extends Omit<Service, 'id' | 'business_id' | 'created_at' | 'updated_at' | 'currency'> {
-  currency?: string; // Make optional if it defaults to business currency
-}
-export interface UpdateServiceDto extends Partial<CreateServiceDto> {}
-
+// The old Service, CreateServiceDto, and UpdateServiceDto are removed as Service is now imported from './service.types'.
 
 // --- Employee & Schedule Types ---
 // Matches backend EmployeeDetails
@@ -263,7 +262,7 @@ export interface Booking {
     currency_at_booking?: string;
     buffer_before?: number;
     buffer_after?: number;
-    [key: string]: any; // Allow other custom metadata
+    [key:string]: any; // Allow other custom metadata
   } | null;
   booked_by_user_id?: string | null; // users.id
   cancellation_reason?: string | null;
@@ -306,19 +305,8 @@ export interface UpdateBookingStatusDto {
   notes?: string;
 }
 
-export interface TimeSlot { // For availability API
-  start_time: string; // UTC ISO string
-  end_time: string;   // UTC ISO string
-  employee_id?: string; // employees.id
-  is_available: boolean;
-}
-
-export interface AvailabilityQuery { // For availability API
-  service_id: string;
-  date: string; // YYYY-MM-DD (representing the day in business's local timezone)
-  employee_id?: string; // employees.id
-  // timezone?: string; // Client's IANA timezone (optional, for logging/context by backend)
-}
+// TimeSlot and AvailabilityQuery are now imported from './availability.types'.
+// Their definitions are removed from here.
 
 // --- Notification Types ---
 export type NotificationType = 
